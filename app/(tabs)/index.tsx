@@ -1,31 +1,31 @@
-import { StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
+import React, { useState } from 'react';
+import HomeHeader from '@/components/HomeHeader';
+import { defaultStyle } from '@/components/styles';
+import HomeCard from '@/components/HomeCard';
+import JobRecommandationCard from '@/components/JobRecommandationCard';
+import JobCard from '@/components/JobCard';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
 
-export default function TabOneScreen() {
+const index = () => {
+  const [category,setCategory] = useState('All Job')
+  const onDataChanged = (category:string)=>{
+     setCategory(category)
+  }
+  const jobList =[
+    {}
+  ]
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
-  );
+    <SafeAreaView style={defaultStyle.container}>
+      <View style={{paddingHorizontal:20,paddingTop:10}}>
+      <HomeHeader/>
+      <HomeCard/>
+      <JobRecommandationCard onCategoryChanged={onDataChanged}/>
+      <JobCard JobList={jobList}/>
+      </View>
+    </SafeAreaView>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+
+export default index
