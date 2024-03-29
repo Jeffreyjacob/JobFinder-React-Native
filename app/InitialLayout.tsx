@@ -34,9 +34,14 @@ const InitialLayout = () => {
                 options={{ headerTitle: '' }} />
             <Stack.Screen name='search'
              options={{
-                headerTitle:"",
-                animation:'slide_from_bottom'
+                headerTitle:"Search",
+                animation:'slide_from_bottom',
             }} />
+            <Stack.Screen name='JobListing/[Id]'
+            options={{
+                headerTitle:'Job Details'
+            }}/>
+           
         </Stack>
     )
 }

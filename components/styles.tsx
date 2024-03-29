@@ -29,4 +29,15 @@ export const  defaultStyle = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
+    searchbtn: {
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center',
+        width: "100%",
+        backgroundColor: "#eeeeee",
+        padding: 15,
+        borderRadius: 12,
+        marginTop: 15,
+        justifyContent:'space-around'
+    }
 })

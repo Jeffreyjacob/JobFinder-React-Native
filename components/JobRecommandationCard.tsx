@@ -5,14 +5,15 @@ import * as Haptics from 'expo-haptics';
 
 
 const categories = [
-    {id:'1',name:'All Job'},
-    {id:"2",name:"writer"},
-    {id:"3",name:'Design'},
-    {id:"4",name:'Finance'},
-    {id:'5',name:'Tech'},
-    {id:'6',name:'Real Estate'},
-    {id:'7',name:'Engineer'},
-    {id:'8',name:'Nurse'}
+    {id:'1',name:'Accounting'},
+    {id:"2",name:"Sales"},
+    {id:"3",name:'Healthcare'},
+    {id:"4",name:'Marketing'},
+    {id:'5',name:'HR'},
+    {id:'6',name:'Design'},
+    {id:'7',name:'Construction'},
+    {id:'8',name:'Management'},
+    {id:'9',name:'Nurses'}
 ]
 
 interface Props{
@@ -27,7 +28,7 @@ const JobRecommandationCard = ({onCategoryChanged}:Props) => {
        setActiveIndex(index)
        const selected = ItemRef.current[index]
        selected?.measure((x)=>{
-        ScrollRef.current?.scrollTo({x:x - 16,y:0,animated:true})
+        ScrollRef.current?.scrollTo({x:x - 10,y:0,animated:true})
        })
        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
        onCategoryChanged(categories[index].name)
@@ -45,9 +46,9 @@ const JobRecommandationCard = ({onCategoryChanged}:Props) => {
       <ScrollView horizontal
        ref={ScrollRef}
        showsHorizontalScrollIndicator={false}
-       style={{marginTop:30}}
+       style={{marginTop:15}}
        contentContainerStyle={{
-        gap:10,
+      gap:5,
         alignItems:'center'
        }}>
          {

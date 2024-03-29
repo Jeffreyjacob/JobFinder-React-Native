@@ -17,7 +17,8 @@ export default function TabLayout() {
       headerShown:false
      }} />
      <Tabs.Screen name='savejob' options={{
-       tabBarLabel:'',tabBarIcon:({color,size})=><FontAwesome name="bookmark" size={size} color={color} />
+       tabBarLabel:'',tabBarIcon:({color,size})=><FontAwesome name="bookmark" size={size} color={color}
+       />,headerTitle:"Saved Jobs",headerTitleStyle:{fontFamily:'PopB',fontSize:22},headerShadowVisible:false
      }}/>
      <Tabs.Screen name='message' 
      options={{tabBarLabel:"",tabBarIcon:({color,size})=><MaterialCommunityIcons name="message-processing" size={size} color={color}/>
