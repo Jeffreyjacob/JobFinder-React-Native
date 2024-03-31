@@ -1,5 +1,4 @@
-import { View, Text, TouchableOpacity,
-    ScrollView, StyleSheet} from 'react-native'
+import { View, Text, TouchableOpacity,ScrollView, StyleSheet} from 'react-native'
 import React, { useRef, useState } from 'react'
 import * as Haptics from 'expo-haptics';
 

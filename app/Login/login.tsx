@@ -3,13 +3,14 @@ import {
     Image, TextInput, TouchableOpacity, Alert, ActivityIndicator
 } from 'react-native';
 import React, { useState } from 'react'
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Controller, useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { defaultStyle } from '@/components/styles';
-import { useSignIn } from "@clerk/clerk-expo";
+import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import { useWarmUpBrowser } from '../hooks/useWarmUpBrowser';
 
 type formValue = {
     email: string,
@@ -19,11 +20,21 @@ const formSchema = z.object({
     email: z.string().email('Please enter a valid email'),
     password: z.string().min(8, 'Password must be at least 8 characters'),
 });
+enum Strategy {
+    Google = 'oauth_google',
+    Apple = 'oauth_apple',
+    Facebook = 'oauth_facebook'
+ }
 
 const login = () => {
+    useWarmUpBrowser();
     const { control, handleSubmit } = useForm<formValue>({ resolver: zodResolver(formSchema) })
     const [loading, setLoading] = useState(false)
     const {isLoaded,signIn,setActive} = useSignIn();
+    const router = useRouter()
+    const {startOAuthFlow:appleAuth} = useOAuth({strategy:'oauth_apple'});
+    const {startOAuthFlow:googleAuth} = useOAuth({strategy:'oauth_google'});
+    const {startOAuthFlow:facebookAuth} = useOAuth({strategy:'oauth_facebook'});
 
     const onSubmit = async (data:formValue) => {
         setLoading(true)
@@ -43,6 +54,23 @@ const login = () => {
           }
 
 
+    }
+    const onSelectAuth = async (strategy: Strategy)=>{
+        const selectedAuth = {
+          [Strategy.Google]:googleAuth,
+          [Strategy.Apple]:appleAuth,
+          [Strategy.Facebook]:facebookAuth,
+        }[strategy]
+        try{
+           const {createdSessionId,setActive} = await selectedAuth();
+           console.log('created session',createdSessionId)
+           if(createdSessionId){
+              setActive!({session:createdSessionId})
+              router.back()
+           }
+        }catch(err){
+          console.error(err)
+        }
     }
 
     return (
@@ -136,13 +164,13 @@ const login = () => {
                     flexDirection: 'row', justifyContent: 'space-evenly',
                     paddingHorizontal: 20, paddingTop: 25
                 }}>
-                    <TouchableOpacity style={styles.socialBtn}>
+                    <TouchableOpacity style={styles.socialBtn} onPress={()=>onSelectAuth(Strategy.Facebook)}>
                         <Ionicons name='logo-facebook' size={28} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialBtn}>
+                    <TouchableOpacity style={styles.socialBtn} onPress={()=>onSelectAuth(Strategy.Google)}>
                         <Ionicons name='logo-google' size={28} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialBtn}>
+                    <TouchableOpacity style={styles.socialBtn} onPress={()=>onSelectAuth(Strategy.Apple)}>
                         <Ionicons name='logo-apple' size={28} />
                     </TouchableOpacity>
                 </View>

@@ -1,7 +1,9 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-expo';
 import { Stack, useRouter, useSegments } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 const InitialLayout = () => {
     const { isLoaded, isSignedIn } = useAuth();
@@ -17,7 +19,8 @@ const InitialLayout = () => {
         }
     }, [isSignedIn]);
     return (
-        <Stack screenOptions={{headerTintColor:"black",
+        <GestureHandlerRootView style={{flex:1}}>
+           <Stack screenOptions={{headerTintColor:"black",
         headerShadowVisible:false,headerBackTitleVisible:false,
         headerTitleStyle:{fontFamily:"PopB",fontSize:22}}}>
             <Stack.Screen name='(tabs)' options={{
@@ -41,8 +44,21 @@ const InitialLayout = () => {
             options={{
                 headerTitle:'Job Details'
             }}/>
+            <Stack.Screen name='(modals)/AboutMe'
+            options={{
+                presentation:'modal',
+                headerTitle:'Edit About',
+                headerShadowVisible:false,
+                headerLeft:()=>(
+                    <TouchableOpacity onPress={()=>router.back()}>
+                        <Ionicons name='close-outline' size={22}/>
+                    </TouchableOpacity>
+                ),
+                headerBackTitleVisible:false
+            }}/>
            
         </Stack>
+        </GestureHandlerRootView>
     )
 }
 

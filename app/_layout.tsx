@@ -12,6 +12,8 @@ import { SignIn, useAuth } from '@clerk/clerk-react';
 import { View } from 'react-native';
 import { Slot } from 'expo-router';
 import InitialLayout from './InitialLayout';
+import { Provider } from 'react-redux';
+import { Store } from '@/Store/store';
 
 const ClERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY
 
@@ -82,7 +84,9 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
     <ClerkProvider publishableKey={ClERK_PUBLISHABLE_KEY!} tokenCache={TokenCache}>
+      <Provider store={Store}>
       <InitialLayout/>
+      </Provider>
     </ClerkProvider>
   );
 }

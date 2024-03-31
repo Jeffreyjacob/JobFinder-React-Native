@@ -11,7 +11,7 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-   <Tabs screenOptions={{tabBarActiveTintColor:"#002695"}}>
+   <Tabs screenOptions={{tabBarActiveTintColor:"#002695",tabBarStyle:{height:90}}}>
      <Tabs.Screen name='index' options={{
       tabBarLabel:'',tabBarIcon:({color,size})=><Entypo name='home' size={size} color={color}/>,
       headerShown:false
@@ -22,10 +22,10 @@ export default function TabLayout() {
      }}/>
      <Tabs.Screen name='message' 
      options={{tabBarLabel:"",tabBarIcon:({color,size})=><MaterialCommunityIcons name="message-processing" size={size} color={color}/>
-     }}/>
+     ,headerTitle:'Chats',headerTitleStyle:{fontFamily:'PopB',fontSize:22},headerShadowVisible:false}}/>
      <Tabs.Screen name='profile' options={{
       tabBarLabel:"",tabBarIcon:({color,size})=><Ionicons name="person" size={size} color={color} />
-     }}/>
+     ,headerTitle:'',headerShadowVisible:false,headerTransparent:true}}/>
      
    </Tabs>
   );
