@@ -10,6 +10,7 @@ import { db } from '@/firebase';
 import WorkExperienceCard from '@/components/WorkExperienceCard';
 import AboutMeCard from '@/components/AboutMeCard';
 import ContactInfoCard from '@/components/ContactInfoCard';
+import SkillCard from '@/components/SkillCard';
 
 
 const Profile = () => {
@@ -92,7 +93,6 @@ const Profile = () => {
             }))
             setWorkExperience(items)
             setloading(false)
-            console.log(items)
           }
         )
      }
@@ -153,6 +153,9 @@ const Profile = () => {
 
          {/**About Me */}
           <AboutMeCard Data={AboutMe} loading={loading}/>
+
+          {/**Skills */}
+         <SkillCard Data={[]} loading={loading}/>
 
          {/**Work Experience */}
          <WorkExperienceCard Data={WorkExperience} loading={loading}/>

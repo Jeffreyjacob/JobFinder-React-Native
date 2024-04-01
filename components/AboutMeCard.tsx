@@ -9,13 +9,16 @@ interface Props {
 }
 
 const AboutMeCard = ({ Data, loading }: Props) => {
-  const router = useRouter()
+  const router = useRouter();
+  const navigateEditAbout = () =>{
+    router.navigate('(modals)/AboutMe')
+  }
   return (
     <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 30, gap: 20, }}>
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ fontFamily: 'PopB', fontSize: 20 }}>About me</Text>
-        <TouchableOpacity onPress={() => router.navigate('(modals)/AboutMe')}>
+        <TouchableOpacity onPress={() =>navigateEditAbout()}>
           <FontAwesome name="edit" size={24} color="black" />
         </TouchableOpacity>
       </View>

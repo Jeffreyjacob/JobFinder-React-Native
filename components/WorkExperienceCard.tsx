@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect } from 'react'
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import { useRouter } from 'expo-router';
@@ -21,6 +21,10 @@ const DeleteButton = (Id:any)=>{
     </Animated.View>
   )
 }
+const formatMonthYear = (timestamp:any) => {
+  const date = new Date(timestamp.seconds * 1000);
+  return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+};
 
 const deleteExperience = async (Id:any)=>{
   try{
@@ -41,11 +45,15 @@ const WorkExperienceCard = ({Data,loading}:Props) => {
             <FontAwesome name="edit" size={24} color="black" />
             </TouchableOpacity>
            </View>
-
-           <View>
+           
+           <View style={{borderBottomWidth: 1, paddingBottom: 20, borderColor: '#e5e5e5' }}>
+           {
+            loading ? <ActivityIndicator color={'#002695'}/>:
+            (
+              <View>
                 {
                  Data.map((item)=>(
-                   <Swipeable renderRightActions={()=>DeleteButton(item?.id)}>
+                   <Swipeable renderRightActions={()=>DeleteButton(item?.id)} key={item?.id}>
                     <TouchableOpacity style={{padding:10}}>
                          <View style={{flexDirection:'row',gap:15,alignItems:'center'}}>
                              <View style={styles.imageContainer}>
@@ -56,7 +64,8 @@ const WorkExperienceCard = ({Data,loading}:Props) => {
                              <View>
                                <Text style={{fontFamily:'PopB',fontSize:18}}>{item?.date?.title}</Text>
                                <Text style={{fontFamily:'PopSb',fontSize:15,color:'grey'}}>{item?.date.companyName}</Text>
-                               <Text style={{fontFamily:'PopSb',fontSize:15,color:'grey'}}>{}</Text>
+                               <Text style={{fontFamily:'PopSb',fontSize:15,color:'grey'}}>
+                                {formatMonthYear(item?.date.startDate)} - {formatMonthYear(item?.date.endDate)}</Text>
                              </View>
                          </View>
                     </TouchableOpacity>
@@ -64,6 +73,9 @@ const WorkExperienceCard = ({Data,loading}:Props) => {
                  ))
                 }
            </View>
+            )
+           }
+        </View>
           
     </View>
   )
