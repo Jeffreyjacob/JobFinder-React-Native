@@ -1,11 +1,16 @@
 import { View, Text, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useAuth, useUser } from '@clerk/clerk-expo'
 import { defaultStyle } from '@/components/styles';
 import Animated, { interpolate, interpolateColor, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 import { useNavigation, useRouter } from 'expo-router';
 import { AntDesign, Entypo, FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { db } from '@/firebase';
+import WorkExperienceCard from '@/components/WorkExperienceCard';
+import AboutMeCard from '@/components/AboutMeCard';
+import ContactInfoCard from '@/components/ContactInfoCard';
+
 
 const Profile = () => {
   const { signOut, isSignedIn } = useAuth()
@@ -16,6 +21,9 @@ const Profile = () => {
   const scrollOffset = useScrollViewOffset(scrollRef);
   const navigation = useNavigation();
   const router = useRouter();
+  const [AboutMe,setAboutMe] = useState<any>([])
+  const [WorkExperience,setWorkExperience] = useState<any>([])
+  const [loading,setloading] = useState(false)
 
   const imageAnimatedStyle = useAnimatedStyle(()=>{
     return{
@@ -37,7 +45,7 @@ const Profile = () => {
   })
   const headerAnimatedStyle = useAnimatedStyle(()=>{
     return {
-      opacity:interpolate(scrollOffset.value,[0,IMG_HEIGHT / 1.5],[0,1])
+      opacity:interpolate(scrollOffset.value,[0,IMG_HEIGHT / 1.8],[0,1])
     }
   })
 
@@ -63,6 +71,38 @@ const Profile = () => {
       )
     })
  },[])
+  useEffect(()=>{
+    setloading(true)
+    const fetchAboutme = async ()=>{
+      const querySnapShot = await db.collection('aboutme').doc('g5ocHgrsoVUfPaNVLeFV').get()
+      .then(
+          docs => {
+             const items = docs.data();
+             setAboutMe(items)
+             setloading(false)
+          }
+      )
+     }
+     const FetchWorkExperience = async ()=>{
+        const querySnapShot = await db.collection('WorkExperience').onSnapshot(
+          doc =>{
+            const items = doc.docs.map(res =>({
+               id:res.id,
+               date:res.data()
+            }))
+            setWorkExperience(items)
+            setloading(false)
+            console.log(items)
+          }
+        )
+     }
+
+
+     
+    fetchAboutme()
+    FetchWorkExperience()
+  },[])
+
  const cameraUpload = async ()=>{
   try{
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -88,7 +128,7 @@ const Profile = () => {
       <Animated.ScrollView
        ref={scrollRef}
        scrollEventThrottle={16}>
-        <Animated.View style={imageAnimatedStyle}>
+        <Animated.View>
           <Animated.Image source={{uri:user?.imageUrl}}
           style={[{height:IMG_HEIGHT,width}]}
           />
@@ -109,51 +149,14 @@ const Profile = () => {
           </Animated.View>
          
          {/** Contact information*/}
-         <View style={{flex:1,paddingHorizontal:20,paddingTop:45,gap:20}}>
-           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text style={{fontFamily:'PopB',fontSize:20}}>Contact Information</Text>
-            <TouchableOpacity>
-            <FontAwesome name="edit" size={24} color="black" />
-            </TouchableOpacity>
-           </View>
-            {/**EMail address */}
-            <View>
-            <Text style={{fontFamily:"PopB",fontSize:16}}>Email Address</Text>
-            <Text style={{fontFamily:'Pop',fontSize:16}}>
-              {user?.primaryEmailAddress?.emailAddress}
-              </Text>
-            </View>
-            {/**number */}
-            <View>
-            <Text style={{fontFamily:"PopB",fontSize:16}}>Mobile Number</Text>
-            <Text style={{fontFamily:'Pop',fontSize:16}}>
-              +23479884444
-              </Text>
-            </View>
-
-            <View>
-            <Text style={{fontFamily:"PopB",fontSize:16}}>Website</Text>
-            <Text style={{fontFamily:'Pop',fontSize:16}}>
-              //Website lInk////
-              </Text>
-            </View>
-          
-         </View>
+         <ContactInfoCard/>
 
          {/**About Me */}
-         <View style={{flex:1,paddingHorizontal:20,paddingTop:45,gap:20}}>
-           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text style={{fontFamily:'PopB',fontSize:20}}>About me</Text>
-            <TouchableOpacity onPress={()=>router.navigate('(modals)/AboutMe')}>
-            <FontAwesome name="edit" size={24} color="black" />
-            </TouchableOpacity>
-           </View>
-      
-          
-          
-         </View>
-        
-          
+          <AboutMeCard Data={AboutMe} loading={loading}/>
+
+         {/**Work Experience */}
+         <WorkExperienceCard Data={WorkExperience} loading={loading}/>
+     
         
       </Animated.ScrollView>
   </View>

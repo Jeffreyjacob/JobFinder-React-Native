@@ -56,6 +56,19 @@ const InitialLayout = () => {
                 ),
                 headerBackTitleVisible:false
             }}/>
+            <Stack.Screen name='(modals)/WorkExperience'
+            options={{
+                presentation:'modal',
+                headerTitle:'Edit Experience',
+                headerShadowVisible:false,
+                headerLeft:()=>(
+                    <TouchableOpacity onPress={()=>router.back()}>
+                        <Ionicons name='close-outline' size={22}/>
+                    </TouchableOpacity>
+                ),
+                headerBackTitleVisible:false
+            }}/>
+            
            
         </Stack>
         </GestureHandlerRootView>

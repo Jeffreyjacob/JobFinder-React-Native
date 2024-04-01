@@ -37,6 +37,7 @@ const Savejob = () => {
 
 
 
+
   const DeleteButton = (jobId:any)=>{
     return(
       <Animated.View style={{marginHorizontal:20,paddingTop:18}} 
@@ -62,36 +63,36 @@ const Savejob = () => {
         loading ? <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
           <ActivityIndicator color={'#002695'} />
           </View>:
-        (
-          <FlatList
-          data={savedJob}
-          renderItem={(item)=>(
-            <Swipeable renderRightActions={()=>DeleteButton(item.item.id)}
-             overshootRight={false}>
-              <Animated.View exiting={SlideInLeft.delay(300)}>
-              <TouchableOpacity>
-                      <View style={styles.card}>
-                        <View style={styles.icon}>
-                          <FontAwesome name="briefcase" size={30} color="blue" />
-                        </View>
-  
-                        <View>
-                        <Text style={styles.cardName}>{item.item?.data?.jobTitle}</Text>
-                          <Text style={{fontFamily:'Pop',fontSize:14,maxWidth:150}}>{item?.item?.data?.employerName}</Text>
-                          <Text style={{fontFamily:'Pop',fontSize:12,color:'grey'}}>{item.item?.data?.locationName}</Text>
-                        </View>
-                        <View style={{maxWidth:80}}>
-                          <Text style={{fontFamily:'PopB',color:'#002695'}}>${item.item?.data?.maximumSalary}/</Text>
-                        </View>
-                      </View>
-  
-                    </TouchableOpacity>
-              </Animated.View>
-            </Swipeable>
-          )}
-          
-        />
-        )
+             (
+              <FlatList
+              data={savedJob}
+              renderItem={(item)=>(
+                <Swipeable renderRightActions={()=>DeleteButton(item.item.id)}
+                 overshootRight={false}>
+                  <Animated.View exiting={SlideInLeft.delay(300)}>
+                  <TouchableOpacity>
+                          <View style={styles.card}>
+                            <View style={styles.icon}>
+                              <FontAwesome name="briefcase" size={30} color="blue" />
+                            </View>
+      
+                            <View>
+                            <Text style={styles.cardName}>{item.item?.data?.jobTitle}</Text>
+                              <Text style={{fontFamily:'Pop',fontSize:14,maxWidth:150}}>{item?.item?.data?.employerName}</Text>
+                              <Text style={{fontFamily:'Pop',fontSize:12,color:'grey'}}>{item.item?.data?.locationName}</Text>
+                            </View>
+                            <View style={{maxWidth:80}}>
+                              <Text style={{fontFamily:'PopB',color:'#002695'}}>${item.item?.data?.maximumSalary}/</Text>
+                            </View>
+                          </View>
+      
+                        </TouchableOpacity>
+                  </Animated.View>
+                </Swipeable>
+              )}
+              
+            />
+             )
        }
     </Animated.ScrollView>
   )

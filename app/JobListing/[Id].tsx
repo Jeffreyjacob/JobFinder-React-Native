@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Share, Alert, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, Share, Alert, StyleSheet, ScrollView, ActivityIndicator, Image } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { defaultStyle } from '@/components/styles'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
@@ -16,17 +16,17 @@ const Page = () => {
     const apiKey = 'ab2c0f58-640c-4e32-90be-1b85db792b6b'
     useEffect(() => {
         const username = apiKey
-      const password = ''
+        const password = ''
 
-      // Create a base64 encoded string from the credentials
-      const base64Credentials = btoa(`${username}:${password}`);
-      const header = {
-        'Authorization': `Basic ${base64Credentials}`,
-      }
+        // Create a base64 encoded string from the credentials
+        const base64Credentials = btoa(`${username}:${password}`);
+        const header = {
+            'Authorization': `Basic ${base64Credentials}`,
+        }
         const fetchJob = async () => {
             setLoading(true)
             try {
-                const Job = await axios.get(`https://www.reed.co.uk/api/1.0/jobs/${Id}`,{headers:header})
+                const Job = await axios.get(`https://www.reed.co.uk/api/1.0/jobs/${Id}`, { headers: header })
                     .then(res => {
                         console.log(res.data)
                         setJobDetails(res.data)
@@ -63,14 +63,14 @@ const Page = () => {
     const fontSize = 40
     const fontSizeStyle = `font-size: ${fontSize}px;`;
 
-    const modifiedHTMLContent = JobDetails?.jobDescription?.replace(/<[^>]+>/g, (match:any) => {
+    const modifiedHTMLContent = JobDetails?.jobDescription?.replace(/<[^>]+>/g, (match: any) => {
         // Check if the matched element is not a style tag
         if (!match.startsWith('<style')) {
-          // Add the font size style to the matched element
-          return match.replace('>', ` style="${fontSizeStyle}">`);
+            // Add the font size style to the matched element
+            return match.replace('>', ` style="${fontSizeStyle}">`);
         }
         return match;
-      });
+    });
     const htmlContent = modifiedHTMLContent
 
     return (
@@ -82,8 +82,12 @@ const Page = () => {
                             <View style={{ paddingTop: 5 }}>
                                 <TouchableOpacity>
                                     <View style={styles.card}>
-                                        <View style={styles.icon}>
-                                            <FontAwesome name="briefcase" size={30} color="blue" />
+                                        <View style={styles.imageContainer}>
+                                            <View style={styles.image}>
+                                                <Image source={require('../../assets/images/Job Finder Logo.png')}
+                                                    style={styles.image}
+                                                />
+                                            </View>
                                         </View>
                                         <View>
                                             <Text style={styles.cardName}>{JobDetails?.jobTitle}</Text>
@@ -96,9 +100,9 @@ const Page = () => {
                                     paddingHorizontal: 10, paddingTop: 15
                                 }}>
                                     <Text style={{ fontFamily: 'PopSb', fontSize: 16, color: 'grey' }}>Salary</Text>
-                                      <Text style={{ fontFamily: 'PopSb', fontSize: 17, color: '#002695'}}>
+                                    <Text style={{ fontFamily: 'PopSb', fontSize: 17, color: '#002695' }}>
                                         {JobDetails?.salary}
-                                        </Text>
+                                    </Text>
                                 </View>
                                 <View style={{
                                     flexDirection: 'row', justifyContent: 'space-between',
@@ -106,30 +110,30 @@ const Page = () => {
                                     paddingBottom: 30
                                 }}>
                                     <Text style={{ fontFamily: 'PopSb', fontSize: 16, color: 'grey' }}>Location</Text>
-                                        <Text style={{ fontFamily: 'PopSb', fontSize: 17, color: '#002695'}}>
-                                            {JobDetails?.locationName}
-                                            </Text>
-                                    
+                                    <Text style={{ fontFamily: 'PopSb', fontSize: 17, color: '#002695' }}>
+                                        {JobDetails?.locationName}
+                                    </Text>
+
                                 </View>
                                 <View style={{ paddingHorizontal: 10, paddingTop: 15 }}>
-                                    <Text style={{ fontFamily: "PopB", fontSize: 20, color: '#002695',paddingBottom:10 }}>
+                                    <Text style={{ fontFamily: "PopB", fontSize: 20, color: '#002695', paddingBottom: 10 }}>
                                         Job Description
                                     </Text>
                                     <WebView
                                         style={styles.webview}
                                         originWhitelist={['*']}
-                                        source={{ html:htmlContent}}
-                                        
+                                        source={{ html: htmlContent }}
+
                                     />
 
                                 </View>
 
-                                
+
                             </View>
-                            <Animated.View style={{padding:15}} entering={SlideInDown.delay(200)} >
+                            <Animated.View style={{ padding: 15 }} entering={SlideInDown.delay(200)} >
                                 <TouchableOpacity style={defaultStyle.btn}>
                                     <Text style={defaultStyle.btnText}>
-                                      Apply
+                                        Apply
                                     </Text>
                                 </TouchableOpacity>
                             </Animated.View>
@@ -148,22 +152,31 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         borderRadius: 10,
         gap: 10,
+        alignItems:'center'
     },
     cardName: {
         fontFamily: "PopSb",
         fontSize: 16,
-        width: 260
+        width: 260,
     },
-    icon: {
-        paddingHorizontal: 15,
-        paddingVertical: 18,
-        backgroundColor: 'white',
-        borderRadius: 10,
-        height: 60
-    },
+    image:{
+        height:60,
+        width:60,
+        borderRadius:15
+       },
+       imageContainer:{
+         elevation: 4,
+         shadowColor: '#000',
+         shadowOpacity: 0.3,
+         shadowRadius: 4,
+         shadowOffset: {
+           width: 2,
+           height: 2,
+         }
+       },
     webview: {
-        height:400,
-       
+        height: 400,
+
     },
 })
 
