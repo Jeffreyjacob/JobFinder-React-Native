@@ -13,6 +13,7 @@ import ContactInfoCard from '@/components/ContactInfoCard';
 import SkillCard from '@/components/SkillCard';
 
 
+
 const Profile = () => {
   const { signOut, isSignedIn } = useAuth()
   const {user} = useUser();
