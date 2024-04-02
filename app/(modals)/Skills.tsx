@@ -23,14 +23,16 @@ const Skills = () => {
         (item)=> item.name.toLowerCase().includes(filter.toLowerCase())
         )
        setFilterData(skill)
-       const item = await db.collection('Skills').doc('FsoFR2G5ifkbwiAOWMbF').get()
+       if(addSkill.length > 0 ){
+        const item = await db.collection('Skills').doc('FsoFR2G5ifkbwiAOWMbF').get()
         setAddSkill(item.data()?.addSkill)
+       }
       
     }
      fetchSkills();
   },[filter])
    const itemRow = 3
-   
+
    const calculateItemsPerRow = (textWidth:any) => {
     // Adjust the threshold value as needed
     const threshold = 200; // Adjust this value based on your design

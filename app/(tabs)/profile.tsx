@@ -24,7 +24,8 @@ const Profile = () => {
   const navigation = useNavigation();
   const router = useRouter();
   const [AboutMe,setAboutMe] = useState<any>([])
-  const [WorkExperience,setWorkExperience] = useState<any>([])
+  const [WorkExperience,setWorkExperience] = useState<any>([]);
+  const [skills,setSkills] = useState<any[]>([]);
   const [loading,setloading] = useState(false)
 
   const imageAnimatedStyle = useAnimatedStyle(()=>{
@@ -97,12 +98,22 @@ const Profile = () => {
           }
         )
      }
+     const fetchSkills = async ()=>{
+      const item = await db.collection('Skills').doc('FsoFR2G5ifkbwiAOWMbF').get();
+       setSkills(item.data()?.addSkill);
+    }
+    const onNavigateBack = () => {
+      fetchAboutme();
+      FetchWorkExperience();
+      fetchSkills();
+    };
 
+    // Listen for navigation focus events
+    const unsubscribe = navigation.addListener('focus', onNavigateBack);
 
-     
-    fetchAboutme()
-    FetchWorkExperience()
-  },[])
+    return unsubscribe;
+ 
+  },[navigation])
 
  const cameraUpload = async ()=>{
   try{
@@ -156,7 +167,7 @@ const Profile = () => {
           <AboutMeCard Data={AboutMe} loading={loading}/>
 
           {/**Skills */}
-         <SkillCard Data={[]} loading={loading}/>
+         <SkillCard Data={skills} loading={loading}/>
 
          {/**Work Experience */}
          <WorkExperienceCard Data={WorkExperience} loading={loading}/>
