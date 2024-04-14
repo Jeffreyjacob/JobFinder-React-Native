@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 export const  defaultStyle = StyleSheet.create({
@@ -39,5 +40,10 @@ export const  defaultStyle = StyleSheet.create({
         borderRadius: 12,
         marginTop: 15,
         justifyContent:'space-around'
-    }
+    },
+    separator: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor:Colors.lightGray,
+        marginLeft: 50,
+      }
 })

@@ -1,6 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react';
-import Animated, { SlideInLeft, SlideInRight } from 'react-native-reanimated';
+import Animated, { FadeInUp, FadeOutUp, SlideInLeft, SlideInRight } from 'react-native-reanimated';
 import { defaultStyle } from '@/components/styles';
 import { db } from '@/firebase';
 import { Link } from 'expo-router';
@@ -8,6 +8,7 @@ import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { SelectSavedJob } from '@/Store/Feature/SavedjobSlice';
+import SwipeableRow from '@/components/SwipeableRow';
 
 const Savejob = () => {
   const [savedJob,setSavedJob] = useState<any>([]);
@@ -66,10 +67,10 @@ const Savejob = () => {
              (
               <FlatList
               data={savedJob}
-              renderItem={(item)=>(
-                <Swipeable renderRightActions={()=>DeleteButton(item.item.id)}
-                 overshootRight={false}>
-                  <Animated.View exiting={SlideInLeft.delay(300)}>
+              renderItem={({item,index})=>(
+                <Animated.View style={{paddingVertical:10}}>
+                <SwipeableRow onDelete={()=>deleteJob(item.id)}>
+                  <Animated.View entering={FadeInUp.delay(index * 10)} exiting={FadeOutUp}>
                   <TouchableOpacity>
                           <View style={styles.card}>
                             <View style={styles.icon}>
@@ -77,18 +78,19 @@ const Savejob = () => {
                             </View>
       
                             <View>
-                            <Text style={styles.cardName}>{item.item?.data?.jobTitle}</Text>
-                              <Text style={{fontFamily:'Pop',fontSize:14,maxWidth:150}}>{item?.item?.data?.employerName}</Text>
-                              <Text style={{fontFamily:'Pop',fontSize:12,color:'grey'}}>{item.item?.data?.locationName}</Text>
+                            <Text style={styles.cardName}>{item.data?.jobTitle}</Text>
+                              <Text style={{fontFamily:'Pop',fontSize:14,maxWidth:150}}>{item?.data?.employerName}</Text>
+                              <Text style={{fontFamily:'Pop',fontSize:12,color:'grey'}}>{item?.data?.locationName}</Text>
                             </View>
                             <View style={{maxWidth:80}}>
-                              <Text style={{fontFamily:'PopB',color:'#002695'}}>${item.item?.data?.maximumSalary}/</Text>
+                              <Text style={{fontFamily:'PopB',color:'#002695'}}>${item?.data?.maximumSalary}/</Text>
                             </View>
                           </View>
       
                         </TouchableOpacity>
                   </Animated.View>
-                </Swipeable>
+                </SwipeableRow>
+                </Animated.View>
               )}
               
             />
@@ -102,7 +104,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 15,
     backgroundColor: "#eeeeee",
-    marginVertical:8,
     borderRadius: 10,
     gap: 10,
     justifyContent: 'space-around',

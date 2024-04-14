@@ -27,6 +27,7 @@ export default function TabLayout() {
       tabBarLabel:"",tabBarIcon:({color,size})=><Ionicons name="person" size={size} color={color} />
      ,headerTitle:'',headerShadowVisible:false,headerTransparent:true}}/>
      
+     
    </Tabs>
   );
 }
