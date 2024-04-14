@@ -1,0 +1,1 @@
+Job search mobile app creating using React native, used clerk for user authentication,used TheMuse job api to get job, using firestore to store the userdata, also used reaminated for app animations and gestures. 
